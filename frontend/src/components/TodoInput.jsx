@@ -3,10 +3,10 @@ import api from "../api";
 
 export default function TodoInput() {
   const [allTodo, setAllTodo] = useState([]);
-  const [data, setData] = useState({
-    title: "",
-    content: "",
-  });
+  const [data, setData] = useState({ title: "", content: "" });
+
+  const [editingTodo, setEditingTodo] = useState(null);
+  const [editData, setEditData] = useState({ title: "", content: "" });
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -37,6 +37,21 @@ export default function TodoInput() {
       setAllTodo(allTodo.filter((todo) => todo.id !== id));
     } catch (error) {
       console.error("Error deleting todo:", error);
+    }
+  }
+
+  async function updateTodo(e) {
+    e.preventDefault();
+    try {
+      const response = await api.put(`api/todos/${editingTodo.id}/`, editData);
+      setAllTodo(
+        allTodo.map((todo) =>
+          todo.id === editingTodo.id ? response.data : todo
+        )
+      );
+      setEditingTodo(null);
+    } catch (error) {
+      console.error("Error updating todo:", error);
     }
   }
 
@@ -81,7 +96,10 @@ export default function TodoInput() {
             </div>
             <div className="flex space-x-2 justify-center sm:justify-end">
               <button
-                //   onClick={() => onEdit(todo)}
+                onClick={() => {
+                  setEditingTodo(todo);
+                  setEditData({ title: todo.title, content: todo.content });
+                }}
                 className="bg-blue-500 cursor-pointer transform duration-300 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
               >
                 Edit
@@ -96,6 +114,52 @@ export default function TodoInput() {
           </div>
         ))}
       </div>
+
+      {/* Edit Modal  */}
+      {editingTodo && (
+        <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-gray-900/30">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h2 className="text-xl font-semibold mb-4 text-center">
+              Edit Todo
+            </h2>
+            <form onSubmit={updateTodo} className="space-y-4">
+              <input
+                type="text"
+                value={editData.title}
+                onChange={(e) =>
+                  setEditData({ ...editData, title: e.target.value })
+                }
+                className="w-full p-2 border border-gray-300 rounded-lg"
+                placeholder="Title"
+              />
+              <input
+                type="text"
+                value={editData.content}
+                onChange={(e) =>
+                  setEditData({ ...editData, content: e.target.value })
+                }
+                className="w-full p-2 border border-gray-300 rounded-lg"
+                placeholder="Content"
+              />
+              <div className="flex justify-between">
+                <button
+                  type="submit"
+                  className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+                >
+                  Update
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEditingTodo(null)}
+                  className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
