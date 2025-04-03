@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
-    <nav className="flex justify-between p-5 items-center h-16 bg-gray-800 text-white cursor-pointer font-bold text-xl">
+    <nav className="flex justify-between p-5 items-center h-16 bg-gray-800 text-white cursor-pointer  text-xl">
       <div>
         <Link to="/">Todo</Link>
       </div>
