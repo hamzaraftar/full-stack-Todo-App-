@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Django migrations
+*/migrations/*.py
+*/migrations/*.pyc
+*/migrations/__pycache__/
+
+# Environment
+.env
+*.env
+venv/
+env/
+ENV/
+*.sqlite3
+
+# VSCode and other IDEs
+.vscode/
+.idea/
+
+# Byte-compiled / optimized / DLL files
+*.so
+*.dll
+*.dylib
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Static files (if collected)
+staticfiles/
+static/
+media/
+
+# Coverage reports
+htmlcov/
+.coverage
+.tox/
+.cache/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Pip
+pip-log.txt
+pip-delete-this-directory.txt
